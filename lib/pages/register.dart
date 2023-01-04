@@ -1,20 +1,21 @@
-import 'package:chatapp_flutter/pages/home.dart';
-import 'package:chatapp_flutter/pages/register.dart';
+import 'package:chatapp_flutter/pages/login.dart';
 import 'package:chatapp_flutter/widgets/widgets.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({Key? key}) : super(key: key);
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
   final formKey = GlobalKey<FormState>();
   String email = '';
+  String fullName = '';
   String password = '';
+
 
   @override
   Widget build(BuildContext context) {
@@ -36,12 +37,32 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 Text(
-                  "Login now to join the fun!",
+                  "Create an account to join the fun!",
                   style: TextStyle(
                     fontSize: 15,
                   ),
                 ),
                 Image.asset('assets/images/login.png'),
+                TextFormField(
+                  decoration: textInputDecoration.copyWith(
+                    labelText: 'Full Name',
+                    prefixIcon: const Icon(
+                      Icons.person,
+                      color: Colors.deepOrange,
+                    ),
+                  ),
+                  onChanged: (value){
+                    setState(() {
+                      fullName = value;
+                    });
+                  },
+                  validator: (value){
+                    return value!.isEmpty ? 'Please enter your full name' : null;
+                  },
+                ),
+                SizedBox(
+                  height: 15,
+                ),
                 TextFormField(
                   decoration: textInputDecoration.copyWith(
                     labelText: 'Email',
@@ -98,8 +119,8 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       onPressed: (){
-                    login();
-                  }, child: Text(
+                        register();
+                      }, child: Text(
                     'Sign In',
                   )),
                 ),
@@ -108,13 +129,13 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 Text.rich(
                   TextSpan(
-                    text: "Don't have an account? ",
+                    text: "You already have an account? ",
                     children: [
                       TextSpan(
-                        text: "Sign Up",
+                        text: "Login",
                         recognizer: TapGestureRecognizer()
                           ..onTap = (){
-                            nextScreen(context, RegisterPage());
+                            nextScreen(context, LoginPage());
                           },
                         style: TextStyle(
                           color: Colors.deepOrange,
@@ -130,7 +151,7 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
-  login(){
+  register(){
     if(formKey.currentState!.validate()){
       print('Login');
     }
