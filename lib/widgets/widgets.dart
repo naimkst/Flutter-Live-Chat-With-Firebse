@@ -28,3 +28,20 @@ void nextScreenReplace(context, page) {
     MaterialPageRoute(builder: (context) => page),
   );
 }
+
+void showSnackbar(context, color, message){
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      backgroundColor: color,
+      content: Text(message),
+      duration: Duration(seconds: 3),
+      action: SnackBarAction(
+        label: 'Close',
+        textColor: Colors.white,
+        onPressed: () {
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        },
+      ),
+    ),
+  );
+}
