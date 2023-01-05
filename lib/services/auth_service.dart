@@ -6,6 +6,18 @@ class AuthService {
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
   //login with email and password
+  Future signInWithEmailAndPassword(String email, String password) async {
+    try {
+      User user = (await firebaseAuth
+          .signInWithEmailAndPassword(email: email, password: password)).user!;
+
+      if(user != null){
+        return true;
+      }
+    } on FirebaseAuthException catch (e) {
+      return e.message;
+    }
+  }
 
   //register with email and password
   Future registerWithEmailAndPassword(
