@@ -32,6 +32,32 @@ class DatabaseService {
 
   //Get user group data
   Future getUserGroups() async{
-    return await userCollection.doc(uid).snapshots();
+    return userCollection.doc(uid).snapshots();
+  }
+
+  //Create group
+  Future createGroup(String userName, String id, String groupName) async{
+    DocumentReference documentReference = await groupCollection.add({
+      "groupName": groupName,
+      "groupIcon": '',
+      "admin": "${id}_$userName",
+      "members": [],
+      "groupId": '',
+      "recentMessage": '',
+      "recentMessageSender": '',
+    });
+
+    //update group id
+    await documentReference.update({
+      "members": FieldValue.arrayUnion(["${uid}_$userName"]),
+      "groupId": documentReference.id,
+    });
+
+    //update user group
+    DocumentReference userDoc = userCollection.doc(uid);
+    return await userDoc.update({
+      "groups": FieldValue.arrayUnion(["${documentReference.id}_$groupName"]),
+    });
+
   }
 }
