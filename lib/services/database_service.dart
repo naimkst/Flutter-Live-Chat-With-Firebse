@@ -29,4 +29,9 @@ class DatabaseService {
         .get();
     return snapshot;
   }
+
+  //Get user group data
+  Future getUserGroups() async{
+    return await userCollection.doc(uid).snapshots();
+  }
 }
